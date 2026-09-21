@@ -20,4 +20,6 @@ dialog input,dialog textarea,dialog select{scroll-margin-block:48px}
 
 .daily-quote{margin-top:22px;padding:24px 28px;background:#eef3e5;border-left:4px solid #789752;border-radius:0 16px 16px 0}.daily-quote blockquote{margin:14px 0;font-size:clamp(18px,2.1vw,23px);line-height:1.6;font-weight:550;overflow-wrap:anywhere}.quote-author{font-size:14px;color:#526d46}.daily-quote details{font-size:12px;color:#60745a;line-height:1.7}.daily-quote summary{cursor:pointer}.daily-quote details p{max-width:720px}
 
+.weekday-chart{margin-bottom:28px}.chart-legend{display:flex;flex-wrap:wrap;gap:16px;margin:18px 0;font-size:13px}.chart-legend span{display:flex;align-items:center;gap:7px}.chart-legend i{width:13px;height:13px;border-radius:3px}.chart-scroll{overflow-x:auto}.chart-scroll svg{display:block;width:100%;min-width:500px;max-height:320px}.weekday-chart summary{cursor:pointer;font-size:13px;margin-top:12px}.weekday-chart table{min-width:460px;text-align:left}.weekday-chart th{font-size:12px;padding:10px 5px}.weekday-chart td{padding:12px 5px}
+
 body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}

@@ -6,14 +6,15 @@
   }
   const link=document.getElementById('apk');
   async function findApk() {
-    for (const apk of ['./downloads/impulso.apk','./downloads/app-debug.apk']) {
+    for (const apk of ['./downloads/Impulso.apk','./downloads/impulso.apk','./downloads/app-debug.apk']) {
       try {
         const response=await fetch(apk,{method:'HEAD',cache:'no-store'});
         if(!response.ok || (response.headers.get('content-type')||'').includes('text/html'))continue;
         const updated=document.getElementById('apk-updated');
         const modified=new Date(response.headers.get('last-modified')||'');
         if(updated)updated.textContent=Number.isNaN(modified.getTime())?'Fecha de actualización Android no informada por el servidor.':'Última actualización del APK publicado: '+modified.toLocaleDateString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'numeric',month:'long',year:'numeric'});
-    link.href=apk;link.download='Impulso.apk';link.removeAttribute('aria-disabled');link.textContent='Descargar para Android ↓';
+    const version=response.headers.get('etag') || response.headers.get('last-modified') || String(Date.now());
+    link.href=apk+'?v='+encodeURIComponent(version);link.download='Impulso.apk';link.removeAttribute('aria-disabled');link.textContent='Descargar para Android ↓';
     document.getElementById('apk-note').textContent='Descargá el APK y abrilo en Android. Para actualizar, instalalo sobre Impulso sin desinstalarla.';
         return;
       } catch (_) { }

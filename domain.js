@@ -67,6 +67,19 @@
     s.goals.forEach(g=>{const h=habit(s,g,today); if(h.earned && dates.includes(h.earned))bonus+=g.bonus;});
     return {dates,positive,negative,bonus,balance:positive-negative+bonus,percent:total?Math.round(yes/total*100):0,total,yes};
   }
+  function weekdayProgress(s,today) {
+    const start=monday(today), totals=Array(7).fill(0), counts=Array(7).fill(0);
+    const first=s.goals.reduce((min,g)=>g.start<min?g.start:min,today);
+    for(let date=first;date<start;date=add(date,1)) {
+      const m=daily(s,date);if(!m.total)continue;
+      const index=(parse(date).getDay()+6)%7;
+      totals[index]+=100*m.yes/m.total;counts[index]++;
+    }
+    return Array.from({length:7},(_,i)=>{
+      const date=add(start,i),m=daily(s,date);
+      return {date,count:counts[i],history:counts[i]?Math.round(totals[i]/counts[i]):null,current:date<=today&&m.total?m.percent:null,pending:date<=today?m.pending:0};
+    });
+  }
   function validate(s) {
     if(!s || s.version!==1 || !Array.isArray(s.goals) || s.goals.length>500 || !s.records || typeof s.records!=='object' || Array.isArray(s.records) || !['ARS','USD','EUR','MXN','CLP','COP','UYU'].includes(s.currency))throw Error('Formato de copia no válido.');
     const ids=new Set();
@@ -80,6 +93,6 @@
     }
     return s;
   }
-  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals};
+  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress};
   if(typeof module!=='undefined')module.exports=api; else root.Impulso=api;
 })(typeof window!=='undefined'?window:globalThis);
