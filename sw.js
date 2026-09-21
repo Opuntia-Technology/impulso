@@ -1,5 +1,5 @@
-const VERSION = '1f5dda39910dd4a4';
-const FILES = ["index.html","app.js","domain.js","style.css","keyboard.js","notifications.js","app.html","landing.css","landing.js","icon-192.png","icon-512.png","apple-touch-icon.png","favicon-32.png","favicon.ico","pwa.js","manifest.webmanifest"];
+const VERSION = 'dd463132db78c136';
+const FILES = ["index.html","app.js","domain.js","style.css","keyboard.js","notifications.js","quote-list.js","daily-quotes.js","app.html","landing.css","landing.js","icon-192.png","icon-512.png","apple-touch-icon.png","favicon-32.png","favicon.ico","pwa.js","manifest.webmanifest"];
 const PREFIX = 'impulso-pwa:' + self.registration.scope + ':';
 const CACHE = PREFIX + VERSION;
 const URLS = FILES.map(file => new URL(file, self.registration.scope).href);

@@ -7,6 +7,7 @@
   const validDate = s => typeof s==='string' && /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(parse(s)) && day(parse(s))===s;
   const active = (g,d) => g.start<=d && (!g.end || d<g.end);
   const goalsOn = (s,d) => s.goals.filter(g=>active(g,d));
+  const habitGoals = s => s.goals.filter(g=>!g.deleted && !g.end);
   const status = (s,g,d) => s.records[d]?.[g.id] ?? null;
   function daily(s,d) {
     const goals=goalsOn(s,d), yes=goals.filter(g=>status(s,g,d)===true).length;
@@ -79,6 +80,6 @@
     }
     return s;
   }
-  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents};
+  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals};
   if(typeof module!=='undefined')module.exports=api; else root.Impulso=api;
 })(typeof window!=='undefined'?window:globalThis);

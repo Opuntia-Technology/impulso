@@ -12,10 +12,10 @@
       settings.prepend(card);
     }
     const status = bridge ? bridge.status() : 'web';
-    card.innerHTML = '<h2>Tu impulso de las 20:00</h2><p class="sub">Una frase cada día y una invitación: «¿Ya registraste tu impulso diario?». Son 100 frases originales, sin atribución a autores, que rotan sin repetirse hasta completar la lista.</p><p class="sub">También recibirás avisos al registrar un día de margen y al confirmar que retomaste. Horario de Argentina, estés donde estés. Android puede demorar la entrega por ahorro de batería.</p>';
+    card.innerHTML = '<h2>Tu impulso de las 09:00</h2><p class="sub">Una frase cada día y una invitación: «¿Ya registraste tu impulso diario?». Son 100 frases originales, sin atribución a autores, que rotan sin repetirse hasta completar la lista.</p><p class="sub">También recibirás avisos al registrar un día de margen y al confirmar que retomaste. Horario de Argentina, estés donde estés. Android puede demorar la entrega por ahorro de batería.</p>';
     const note = document.createElement('p');
     note.className = 'notice';
-    note.textContent = {on:'Activado · todos los días a las 20:00 de Argentina.',off:'Desactivado. Activá el recordatorio cuando quieras.',blocked:'Recordatorio activado, pero Android está bloqueando sus notificaciones. Revisá los permisos.',web:'Los recordatorios funcionan en la aplicación Android instalada. Activarlos en el teléfono no depende de tener abierta esta página.'}[status];
+    note.textContent = {on:'Activado · todos los días a las 09:00 de Argentina.',off:'Desactivado. Activá el recordatorio cuando quieras.',blocked:'Recordatorio activado, pero Android está bloqueando sus notificaciones. Revisá los permisos.',web:'Los recordatorios funcionan en la aplicación Android instalada. Activarlos en el teléfono no depende de tener abierta esta página.'}[status];
     card.append(note);
     if (!bridge) return;
     const actions = document.createElement('div');
