@@ -67,7 +67,9 @@
     s.goals.forEach(g=>{const h=habit(s,g,today); if(h.earned && dates.includes(h.earned))bonus+=g.bonus;});
     return {dates,positive,negative,bonus,balance:positive-negative+bonus,percent:total?Math.round(yes/total*100):0,total,yes};
   }
+  function trendState(s,today) { return {...s,goals:s.goals.filter(g=>!g.deleted && !g.end && g.start<=today)}; }
   function weekdayProgress(s,today) {
+    s=trendState(s,today);
     const start=monday(today), totals=Array(7).fill(0), counts=Array(7).fill(0);
     const first=s.goals.reduce((min,g)=>g.start<min?g.start:min,today);
     for(let date=first;date<start;date=add(date,1)) {
@@ -81,6 +83,7 @@
     });
   }
   function goalWeekdayProgress(s,today) {
+    s=trendState(s,today);
     const cutoff=monday(today);
     return s.goals.map(g=>{
       const counts=Array(7).fill(0),yes=Array(7).fill(0);
