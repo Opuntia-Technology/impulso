@@ -80,6 +80,17 @@
       return {date,count:counts[i],history:counts[i]?Math.round(totals[i]/counts[i]):null,current:date<=today&&m.total?m.percent:null,pending:date<=today?m.pending:0};
     });
   }
+  function goalWeekdayProgress(s,today) {
+    const cutoff=monday(today);
+    return s.goals.map(g=>{
+      const counts=Array(7).fill(0),yes=Array(7).fill(0);
+      for(let d=g.start;d<cutoff && (!g.end || d<g.end);d=add(d,1)) {
+        const i=(parse(d).getDay()+6)%7;
+        counts[i]++;if(status(s,g,d)===true)yes[i]++;
+      }
+      return {id:g.id,title:g.title,start:g.start,ended:!!(g.end||g.deleted),days:counts.map((count,i)=>({count,yes:yes[i],percent:count?Math.round(100*yes[i]/count):null}))};
+    });
+  }
   function validate(s) {
     if(!s || s.version!==1 || !Array.isArray(s.goals) || s.goals.length>500 || !s.records || typeof s.records!=='object' || Array.isArray(s.records) || !['ARS','USD','EUR','MXN','CLP','COP','UYU'].includes(s.currency))throw Error('Formato de copia no válido.');
     const ids=new Set();
@@ -93,6 +104,6 @@
     }
     return s;
   }
-  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress};
+  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress,goalWeekdayProgress};
   if(typeof module!=='undefined')module.exports=api; else root.Impulso=api;
 })(typeof window!=='undefined'?window:globalThis);

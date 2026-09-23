@@ -22,4 +22,7 @@ dialog input,dialog textarea,dialog select{scroll-margin-block:48px}
 
 .weekday-chart{margin-bottom:28px}.chart-legend{display:flex;flex-wrap:wrap;gap:16px;margin:18px 0;font-size:13px}.chart-legend span{display:flex;align-items:center;gap:7px}.chart-legend i{width:13px;height:13px;border-radius:3px}.chart-scroll{overflow-x:auto}.chart-scroll svg{display:block;width:100%;min-width:500px;max-height:320px}.weekday-chart summary{cursor:pointer;font-size:13px;margin-top:12px}.weekday-chart table{min-width:460px;text-align:left}.weekday-chart th{font-size:12px;padding:10px 5px}.weekday-chart td{padding:12px 5px}
 
+.trend-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.trend-legend{border:0;padding:0;margin:16px 0;display:flex;flex-wrap:wrap;gap:10px}.trend-legend legend{font-size:13px;margin-bottom:12px}.trend-legend label{display:flex;align-items:center;gap:8px;border:1px solid #dce4d5;border-radius:12px;padding:10px;cursor:pointer;font-size:14px}.trend-legend input{width:20px;height:20px;margin:0;accent-color:#244b3b}.trend-legend i{width:15px;height:15px;border-radius:50%;flex-shrink:0}.weekday-chart small{display:block;font-size:11px;font-weight:normal;color:#637363}.trend-legend label:has(input:not(:checked)){opacity:.6}
+#goal-trends .chart-scroll svg{min-width:0}@media(max-width:600px){#goal-trends svg text{font-size:19px}}
+
 body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
