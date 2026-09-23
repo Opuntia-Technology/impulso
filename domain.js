@@ -91,11 +91,30 @@
       return {id:g.id,title:g.title,start:g.start,ended:!!(g.end||g.deleted),days:counts.map((count,i)=>({count,yes:yes[i],percent:count?Math.round(100*yes[i]/count):null}))};
     });
   }
+  function perfectStreaks(s,g,today) {
+    const awards=[], existing=g.perfectAwards||[];let start=null,count=0;
+    for(let d=g.start;d<today && (!g.end || d<g.end);d=add(d,1)) {
+      if(existing.some(a=>a.start<=d&&d<=a.end) || status(s,g,d)!==true){start=null;count=0;continue;}
+      if(!count)start=d;
+      if(++count===21){awards.push({start,end:d});count=0;start=null;}
+    }
+    return awards;
+  }
+  function collectPerfectAwards(s,today) {
+    let changed=false;
+    for(const g of s.goals){const earned=perfectStreaks(s,g,today);if(earned.length){g.perfectAwards=[...(g.perfectAwards||[]),...earned].sort((a,b)=>a.start.localeCompare(b.start));changed=true;}}
+    return changed;
+  }
   function validate(s) {
     if(!s || s.version!==1 || !Array.isArray(s.goals) || s.goals.length>500 || !s.records || typeof s.records!=='object' || Array.isArray(s.records) || !['ARS','USD','EUR','MXN','CLP','COP','UYU'].includes(s.currency))throw Error('Formato de copia no válido.');
     const ids=new Set();
     for(const g of s.goals) {
       if(!g || typeof g.id!=='string' || !/^[a-zA-Z0-9-]{1,80}$/.test(g.id) || ids.has(g.id) || typeof g.title!=='string' || !g.title.trim() || g.title.length>120 || !validDate(g.start) || (g.end && (!validDate(g.end)||g.end<g.start)) || ![g.reward,g.penalty,g.bonus].every(n=>Number.isFinite(n)&&n>=0&&n<=1e9))throw Error('Objetivo no válido.');
+      if(g.perfectAwards!==undefined){
+        if(!Array.isArray(g.perfectAwards)||g.perfectAwards.length>10000)throw Error('Insignias no válidas.');
+        let previous=null;
+        for(const a of g.perfectAwards){if(!a||!validDate(a.start)||!validDate(a.end)||add(a.start,20)!==a.end||a.start<g.start||(g.end&&a.end>=g.end)||(previous&&a.start<=previous))throw Error('Insignia no válida.');previous=a.end;}
+      }
       ids.add(g.id);
     }
     for(const [d,rows] of Object.entries(s.records)) {
@@ -104,6 +123,6 @@
     }
     return s;
   }
-  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress,goalWeekdayProgress};
+  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress,goalWeekdayProgress,perfectStreaks,collectPerfectAwards};
   if(typeof module!=='undefined')module.exports=api; else root.Impulso=api;
 })(typeof window!=='undefined'?window:globalThis);
