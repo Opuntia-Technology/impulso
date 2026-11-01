@@ -111,13 +111,15 @@
   function perfectRewardDate(s,g,today) {
     return perfectStreaks(s,{...g,perfectAwards:[]},today)[0]?.end || null;
   }
+  function activeSprint(s,today){return (s.sprints||[]).find(p=>p.id===s.activeSprintId && p.end>=today)||null;}
   function validate(s) {
     if(!s || s.version!==1 || !Array.isArray(s.goals) || s.goals.length>500 || !s.records || typeof s.records!=='object' || Array.isArray(s.records) || !['ARS','USD','EUR','MXN','CLP','COP','UYU'].includes(s.currency))throw Error('Formato de copia no válido.');
     if(s.sprints!==undefined){
       if(!Array.isArray(s.sprints)||s.sprints.length>1000)throw Error('Sprints no válidos.');
       const sprintIds=new Set();
-      for(const p of s.sprints){if(!p||typeof p.id!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(p.id)||sprintIds.has(p.id)||typeof p.name!=='string'||!p.name.trim()||p.name.length>80||typeof p.description!=='string'||p.description.length>280||typeof p.learning!=='string'||p.learning.length>280||!validDate(p.end))throw Error('Sprint no válido.');sprintIds.add(p.id);}
+      for(const p of s.sprints){if(!p||typeof p.id!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(p.id)||sprintIds.has(p.id)||typeof p.name!=='string'||!p.name.trim()||p.name.length>80||typeof p.description!=='string'||p.description.length>280||typeof p.learning!=='string'||p.learning.length>280||!validDate(p.end))throw Error('Sprint no válido.');if(p.color!==undefined&&!['green','violet','blue','clay'].includes(p.color))throw Error('Color de Sprint no válido.');sprintIds.add(p.id);}
     }
+    if(s.activeSprintId!==undefined&&s.activeSprintId!==null&&!(s.sprints||[]).some(p=>p.id===s.activeSprintId))throw Error('Sprint activo no válido.');
     const ids=new Set();
     for(const g of s.goals) {
       if(!g || typeof g.id!=='string' || !/^[a-zA-Z0-9-]{1,80}$/.test(g.id) || ids.has(g.id) || typeof g.title!=='string' || !g.title.trim() || g.title.length>120 || !validDate(g.start) || (g.end && (!validDate(g.end)||g.end<g.start)) || ![g.reward,g.penalty,g.bonus].every(n=>Number.isFinite(n)&&n>=0&&n<=1e9))throw Error('Objetivo no válido.');
@@ -134,6 +136,6 @@
     }
     return s;
   }
-  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress,goalWeekdayProgress,perfectStreaks,collectPerfectAwards,perfectRewardDate};
+  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress,goalWeekdayProgress,perfectStreaks,collectPerfectAwards,perfectRewardDate,activeSprint};
   if(typeof module!=='undefined')module.exports=api; else root.Impulso=api;
 })(typeof window!=='undefined'?window:globalThis);

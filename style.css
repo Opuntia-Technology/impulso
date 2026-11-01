@@ -31,4 +31,10 @@ dialog input,dialog textarea,dialog select{scroll-margin-block:48px}
 
 .sprint-card{margin:16px 0}.sprint-card .section-head{margin-top:0}.sprint-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}.sprint-card h3{font-size:15px}#sprint-form textarea{height:110px;font-family:inherit;font-size:14px}
 
+:root{--sprint-ink:#244b3b;--sprint-soft:#e6efda;--sprint-page:#f7f8f2;--sprint-accent:#547c3b;background:var(--sprint-page);color:var(--sprint-ink)}
+nav a.selected,.hero,.notice,.soft,.icon-button,.badge,.preset,.day,.goal-icon{background:var(--sprint-soft);color:var(--sprint-ink)}
+.dark,#toast,.logo{background:var(--sprint-ink);border-color:var(--sprint-ink);color:white}.button{color:var(--sprint-ink)}.button.dark{color:white}.soft{border-color:var(--sprint-soft)}
+.hero p,.notice,.date-controls input,dialog,input,select,textarea{color:var(--sprint-ink)}.ring{background:conic-gradient(var(--sprint-accent) var(--pct),var(--sprint-soft) 0)}.ring-inner{background:var(--sprint-soft)}.progress span.filled{background:var(--sprint-accent)}.daily-quote{background:var(--sprint-soft);border-color:var(--sprint-accent)}.dot{color:var(--sprint-accent)}
+.sprint-banner{display:flex;align-items:center;gap:12px;padding:14px 18px;margin-bottom:22px;border-radius:14px;background:var(--sprint-soft);color:var(--sprint-ink);border-left:5px solid var(--sprint-accent);text-decoration:none}.sprint-banner>span:first-child{font-size:26px}.sprint-banner small{display:block;margin-top:3px;font-size:12px}.sprint-colors{border:0;padding:0;margin:16px 0;display:flex;flex-wrap:wrap;gap:10px}.sprint-colors legend{font-weight:600;margin-bottom:12px}.sprint-colors label{display:flex;gap:6px;align-items:center;padding:10px;border:2px solid var(--swatch);border-radius:12px;color:var(--swatch)}.sprint-colors input{width:18px;height:18px;accent-color:var(--swatch)}.sprint-activate{margin:10px 0 0 8px}
+
 body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}

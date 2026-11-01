@@ -1,4 +1,4 @@
-const VERSION = 'd9c632ac67e8d988';
+const VERSION = '893f3b97b72ee635';
 const FILES = ["index.html","app.js","domain.js","style.css","keyboard.js","notifications.js","quote-list.js","daily-quotes.js","app.html","landing.css","landing.js","icon-192.png","icon-512.png","apple-touch-icon.png","favicon-32.png","favicon.ico","pwa.js","manifest.webmanifest"];
 const PREFIX = 'impulso-pwa:' + self.registration.scope + ':';
 const CACHE = PREFIX + VERSION;
