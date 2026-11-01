@@ -64,7 +64,7 @@
     dates.filter(d=>d<=today).forEach(d=>goalsOn(s,d).forEach(g=>{
       total++; const v=status(s,g,d); if(v===true){yes++; positive+=g.reward;} if(v===false)negative+=g.penalty;
     }));
-    s.goals.forEach(g=>{const h=habit(s,g,today); if(h.earned && dates.includes(h.earned))bonus+=g.bonus;});
+    s.goals.forEach(g=>{const earned=perfectRewardDate(s,g,today); if(earned && dates.includes(earned))bonus+=g.bonus;});
     return {dates,positive,negative,bonus,balance:positive-negative+bonus,percent:total?Math.round(yes/total*100):0,total,yes};
   }
   function trendState(s,today) { return {...s,goals:s.goals.filter(g=>!g.deleted && !g.end && g.start<=today)}; }
@@ -108,8 +108,16 @@
     for(const g of s.goals){const earned=perfectStreaks(s,g,today);if(earned.length){g.perfectAwards=[...(g.perfectAwards||[]),...earned].sort((a,b)=>a.start.localeCompare(b.start));changed=true;}}
     return changed;
   }
+  function perfectRewardDate(s,g,today) {
+    return perfectStreaks(s,{...g,perfectAwards:[]},today)[0]?.end || null;
+  }
   function validate(s) {
     if(!s || s.version!==1 || !Array.isArray(s.goals) || s.goals.length>500 || !s.records || typeof s.records!=='object' || Array.isArray(s.records) || !['ARS','USD','EUR','MXN','CLP','COP','UYU'].includes(s.currency))throw Error('Formato de copia no válido.');
+    if(s.sprints!==undefined){
+      if(!Array.isArray(s.sprints)||s.sprints.length>1000)throw Error('Sprints no válidos.');
+      const sprintIds=new Set();
+      for(const p of s.sprints){if(!p||typeof p.id!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(p.id)||sprintIds.has(p.id)||typeof p.name!=='string'||!p.name.trim()||p.name.length>80||typeof p.description!=='string'||p.description.length>280||typeof p.learning!=='string'||p.learning.length>280||!validDate(p.end))throw Error('Sprint no válido.');sprintIds.add(p.id);}
+    }
     const ids=new Set();
     for(const g of s.goals) {
       if(!g || typeof g.id!=='string' || !/^[a-zA-Z0-9-]{1,80}$/.test(g.id) || ids.has(g.id) || typeof g.title!=='string' || !g.title.trim() || g.title.length>120 || !validDate(g.start) || (g.end && (!validDate(g.end)||g.end<g.start)) || ![g.reward,g.penalty,g.bonus].every(n=>Number.isFinite(n)&&n>=0&&n<=1e9))throw Error('Objetivo no válido.');
@@ -126,6 +134,6 @@
     }
     return s;
   }
-  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress,goalWeekdayProgress,perfectStreaks,collectPerfectAwards};
+  const api={day,add,monday,validDate,active,goalsOn,status,daily,habit,weekly,validate,weekReview,graceEvents,habitGoals,weekdayProgress,goalWeekdayProgress,perfectStreaks,collectPerfectAwards,perfectRewardDate};
   if(typeof module!=='undefined')module.exports=api; else root.Impulso=api;
 })(typeof window!=='undefined'?window:globalThis);
